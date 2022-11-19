@@ -29,7 +29,7 @@ namespace TabFunctions
         {
             double sum = 0.0;
             int n = (int)((b - a) / h);
-            for (int i = 0; i < n; i++)
+            for (int i = 0; i <= n; i++)
             {
                 double xi = a + i * h;
                 double fxi = FindFx(xi);
@@ -51,7 +51,7 @@ namespace TabFunctions
         {
             int n = (int)((b - a) / h);
             List<Function> funcTable = new List<Function>();
-            for (int i = 0; i < n; i++)
+            for (int i = 0; i <= n; i++)
             {
                 double x = a + i * h;
                 double y = FindFx(x);

@@ -27,6 +27,10 @@ namespace TabFunctions
             {
                 dataGridView1.Rows.Add(function.x, function.fx);
             }
+            foreach (Function function in funcTable)
+            {
+                chart1.Series[0].Points.AddXY(function.x, function.fx);
+            }
         }
     }
 }

@@ -21,8 +21,9 @@ namespace TabFunctions
         {
             int a = 0;
             int b = 3;
-            double h = 0.3;
-            List<Function> funcTable = TabBessel.GetFunctions(a, b, h);
+            int n = 10;
+            Point p1 = TabBessel.GetPoint(a,b,)
+            List<Function> funcTable = TabBessel.GetFunctions(a, b, n);
             foreach (Function function in funcTable)
             {
                 dataGridView1.Rows.Add(function.x, function.fx);

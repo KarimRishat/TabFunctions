@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace TabFunctions
 {
+    delegate double Point(int a, int b, int i, int n);
     static class TabBessel
     {
 		
@@ -14,7 +15,7 @@ namespace TabFunctions
 			double eps = 0.000001;
 			double an = 1 ;         //а0 = 1
 			double fx = 0.0;
-			double q = (x / 2) * (x / 2) * (-1);
+			double q = 1;
 			for(int j = 0; Math.Abs(an) >= eps; j++)
             {
 				fx += an;   //добавляем значение к сумме
@@ -25,20 +26,20 @@ namespace TabFunctions
 		}
 
 
-        public static double LagrPol(int a, int b, double h, double x)
+        public static double LagrPol(int a, int b, double x, int n, Point p)
         {
+            double h = (double)((b - a) / n);
             double sum = 0.0;
-            int n = (int)((b - a) / h);
             for (int i = 0; i <= n; i++)
             {
-                double xi = a + i * h;
+                double xi = p(a, b, i, n);
                 double fxi = FindFx(xi);
                 double mult = 1.0;
                 for (int j = 0; i < n; i++)
                 {
                     if (j != i)
                     {
-                        double xj = a + j * h;
+                        double xj = p(a, b, j, n);
                         mult *= (x - xj) / (xi - xj);
                     }
                 }
@@ -47,17 +48,27 @@ namespace TabFunctions
             return sum;
         }
 
-        public static List<Function> GetFunctions(int a, int b, double h)
+        public static List<Function> GetFunctions(int a, int b, int n, Point p)
         {
-            int n = (int)((b - a) / h);
             List<Function> funcTable = new List<Function>();
             for (int i = 0; i <= n; i++)
             {
-                double x = a + i * h;
+                double x = p(a, b, i, n);
                 double y = FindFx(x);
                 funcTable.Add(new Function(x, y));
             }
             return funcTable;
+        }       //Список значений функции
+
+
+        public static double GetPoint(int a, int b, int i, int n)
+        {
+            double h = (double)(b - a) / n;
+            double x = a + i * h;
+            return x;
         }
+        //Находим точку
+
+
     }
 }

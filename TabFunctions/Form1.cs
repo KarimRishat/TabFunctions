@@ -21,17 +21,32 @@ namespace TabFunctions
         {
             int a = 0;
             int b = 3;
-            int n = 10;
-            Point p1 = TabBessel.GetPoint(a,b,)
+            int n = 5;
+            int m = 10;
+            int l = 21;        //количество узлов для полинома лагранжа
             List<Function> funcTable = TabBessel.GetFunctions(a, b, n);
             foreach (Function function in funcTable)
             {
-                dataGridView1.Rows.Add(function.x, function.fx);
+                dataGridViewFunc.Rows.Add(function.x, function.fx);
             }
-            foreach (Function function in funcTable)
+            //foreach (Function function in funcTable)
+            //{
+            //    chart1.Series[0].Points.AddXY(function.x, function.fx);
+            //}
+            List<Function> funcTableLn = TabBessel.GetLn(a, b, n, m);
+            foreach (Function function in funcTableLn)
             {
-                chart1.Series[0].Points.AddXY(function.x, function.fx);
+                dataGridViewLN.Rows.Add(function.x, function.fx);
             }
+
+            for (int i = 0; i < m; i++)
+            {
+                double y = Math.Abs(funcTable[i].fx - funcTableLn[i].fx);
+                chart1.Series[1].Points.AddXY(funcTable[i].x, y);
+            }
+
         }
+
+
     }
 }

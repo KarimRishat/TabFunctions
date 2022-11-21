@@ -6,16 +6,15 @@ using System.Threading.Tasks;
 
 namespace TabFunctions
 {
-    delegate double Point(int a, int b, int i, int n);
     static class TabBessel
     {
 		
         public static double FindFx(double x)
         {
 			double eps = 0.000001;
-			double an = 1 ;         //а0 = 1
+			double an = 1.0 ;         //а0 = 1
 			double fx = 0.0;
-			double q = 1;
+			double q = 1.0;
 			for(int j = 0; Math.Abs(an) >= eps; j++)
             {
 				fx += an;   //добавляем значение к сумме
@@ -26,34 +25,48 @@ namespace TabFunctions
 		}
 
 
-        public static double LagrPol(int a, int b, double x, int n, Point p)
+        public static double LagrPol(int a, int b, double x, int n)
         {
-            double h = (double)((b - a) / n);
             double sum = 0.0;
-            for (int i = 0; i <= n; i++)
+            for (int i = 0; i < n; i++)
             {
-                double xi = p(a, b, i, n);
+                double xi = GetPoint(a, b, i, n);
                 double fxi = FindFx(xi);
                 double mult = 1.0;
-                for (int j = 0; i < n; i++)
+                for (int j = 0; j < n; j++)
                 {
                     if (j != i)
                     {
-                        double xj = p(a, b, j, n);
+                        double xj = GetPoint(a, b, j, n);
                         mult *= (x - xj) / (xi - xj);
                     }
                 }
-                sum += mult;
+                sum += mult * fxi;
             }
             return sum;
         }
-
-        public static List<Function> GetFunctions(int a, int b, int n, Point p)
+        
+        public static List<Function> GetLn(int a, int b, int n, int m)
         {
             List<Function> funcTable = new List<Function>();
-            for (int i = 0; i <= n; i++)
+
+            for (int i = 0; i < m; i++)
             {
-                double x = p(a, b, i, n);
+                double x = GetPoint(a, b, i, m);        //Берем точку при большем количестве ущлов
+                double ln = LagrPol(a, b, x, m);        //Находим 
+                funcTable.Add(new Function(x, ln));
+            }
+
+            return funcTable;
+        }
+
+
+        public static List<Function> GetFunctions(int a, int b, int n)
+        {
+            List<Function> funcTable = new List<Function>();
+            for (int i = 0; i < n; i++)
+            {
+                double x = GetPoint(a, b, i, n);
                 double y = FindFx(x);
                 funcTable.Add(new Function(x, y));
             }
@@ -64,10 +77,9 @@ namespace TabFunctions
         public static double GetPoint(int a, int b, int i, int n)
         {
             double h = (double)(b - a) / n;
-            double x = a + i * h;
+            double x = i * h;
             return x;
         }
-        //Находим точку
 
 
     }

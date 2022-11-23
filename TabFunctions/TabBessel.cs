@@ -25,19 +25,19 @@ namespace TabFunctions
 		}
 
 
-        public static double LagrPol(int a, int b, double x, int n)
+        public static double LagrPol(int a, int b, double x, int n, double h)
         {
             double sum = 0.0;
             for (int i = 0; i < n; i++)
             {
-                double xi = GetPoint(a, b, i, n);
+                double xi = a + i * h;
                 double fxi = FindFx(xi);
                 double mult = 1.0;
                 for (int j = 0; j < n; j++)
                 {
                     if (j != i)
                     {
-                        double xj = GetPoint(a, b, j, n);
+                        double xj = a + j * h;
                         mult *= (x - xj) / (xi - xj);
                     }
                 }
@@ -46,14 +46,14 @@ namespace TabFunctions
             return sum;
         }
         
-        public static List<Function> GetLn(int a, int b, int n, int m)
+        public static List<Function> GetLn(int a, int b, int n, double h)
         {
             List<Function> funcTable = new List<Function>();
 
-            for (int i = 0; i < m; i++)
+            for (int i = 0; i < n; i++)
             {
-                double x = GetPoint(a, b, i, m);        //Берем точку при большем количестве ущлов
-                double ln = LagrPol(a, b, x, m);        //Находим 
+                double x = a + i * h;        //Берем точку при большем количестве ущлов
+                double ln = LagrPol(a, b, x, n, h);        //Находим 
                 funcTable.Add(new Function(x, ln));
             }
 
@@ -61,25 +61,17 @@ namespace TabFunctions
         }
 
 
-        public static List<Function> GetFunctions(int a, int b, int n)
+        public static List<Function> GetFunctions(int a, int b, int n, double h)
         {
             List<Function> funcTable = new List<Function>();
             for (int i = 0; i < n; i++)
             {
-                double x = GetPoint(a, b, i, n);
+                double x = a + i * h;
                 double y = FindFx(x);
                 funcTable.Add(new Function(x, y));
             }
             return funcTable;
         }       //Список значений функции
-
-
-        public static double GetPoint(int a, int b, int i, int n)
-        {
-            double h = (double)(b - a) / n;
-            double x = i * h;
-            return x;
-        }
 
 
     }

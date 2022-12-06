@@ -17,13 +17,22 @@ namespace TabFunctions
             InitializeComponent();
         }
 
+        void DrawChart(List<Function> func, System.Windows.Forms.DataVisualization.Charting.Series series)
+        {
+            
+            foreach (Function item in func)
+            {
+                series.Points.AddXY(item.x, item.fx);
+            }
+        }
+
         private void Form1_Load(object sender, EventArgs e)
         {
             int a = 0;
             int b = 3;
             double h = 0.6;        //количество узлов для полинома лагранжа
             int n = (int)((b - a) / h);
-            double h2 = 0.25;
+            double h2 = 0.3;
             int m = (int)((b - a) / h2);
 
             #region Func
@@ -32,10 +41,7 @@ namespace TabFunctions
             {
                 dataGridViewFunc.Rows.Add(function.x, function.fx);
             }
-            //foreach (Function function in funcTable)
-            //{
-            //    chart1.Series[0].Points.AddXY(function.x, function.fx);
-            //}
+            //DrawChart(funcTable, chart1.Series[0]);
 
             #endregion Func
 
@@ -48,11 +54,14 @@ namespace TabFunctions
             #endregion
 
             List<Function> funcTable2 = TabBessel.GetFunctions(a, m, h2, new Point());    //поиск функции с большими узлами
+            List<Function> errors = new List<Function>();
             for (int i = 0; i < m; i++)
             {
                 double y = Math.Abs(funcTable2[i].fx - funcTableLn[i].fx);
-                chart1.Series[1].Points.AddXY(funcTable2[i].x, y);
+                errors.Add(new Function(funcTable2[i].x, y));
             }
+            DrawChart(errors, chart1.Series[1]);
+
 
         }
 

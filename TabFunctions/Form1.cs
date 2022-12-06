@@ -23,6 +23,8 @@ namespace TabFunctions
             int b = 3;
             double h = 0.6;        //количество узлов для полинома лагранжа
             int n = (int)((b - a) / h);
+            double h2 = 0.25;
+            int m = (int)((b - a) / h2);
 
             #region Func
             List<Function> funcTable = TabBessel.GetFunctions(a, n, h, new Point());
@@ -38,16 +40,15 @@ namespace TabFunctions
             #endregion Func
 
             #region LN
-            List<Function> funcTableLn = TabBessel.GetLn(a, n, h, new Point(), funcTable);
+            List<Function> funcTableLn = TabBessel.GetLn(a, n, m, h2, new Point(), funcTable);
             foreach (Function function in funcTableLn)
             {
                 dataGridViewLN.Rows.Add(function.x, function.fx);
             }
             #endregion
 
-            List<Function> funcTable2 = TabBessel.GetFunctions(a, n*2, h/2, new Point());    //поиск функции с большими узлами
-
-            for (int i = 0; i < n*2-1; i++)
+            List<Function> funcTable2 = TabBessel.GetFunctions(a, m, h2, new Point());    //поиск функции с большими узлами
+            for (int i = 0; i < m; i++)
             {
                 double y = Math.Abs(funcTable2[i].fx - funcTableLn[i].fx);
                 chart1.Series[1].Points.AddXY(funcTable2[i].x, y);

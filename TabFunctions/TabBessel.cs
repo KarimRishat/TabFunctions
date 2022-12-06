@@ -46,13 +46,12 @@ namespace TabFunctions
             return sum;
         }
         
-        public static List<Function> GetLn(int a, int n, double h, IPoint point, List<Function> func)
+        public static List<Function> GetLn(int a, int n,int m, double h, IPoint point, List<Function> func)
         {
             List<Function> funcTable = new List<Function>();
-            int m = n * 2;
             for (int i = 0; i <= m; i++)
             {
-                double x = point.GetPoint(a, i, h/2);        //Берем точку при большем количестве ущлов
+                double x = point.GetPoint(a, i, h);        //Берем точку при большем количестве ущлов
                 double ln = LagrPol(x, n, func);        //Находим 
                 funcTable.Add(new Function(x, ln));
             }

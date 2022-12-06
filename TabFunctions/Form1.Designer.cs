@@ -52,6 +52,7 @@ namespace TabFunctions
             this.dataGridViewMaxError = new System.Windows.Forms.DataGridView();
             this.NumberOfNodesCol = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.MaxErrCol = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.buttonMaxErr = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewFunc)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
@@ -224,6 +225,7 @@ namespace TabFunctions
             // 
             // tabPageMaxError
             // 
+            this.tabPageMaxError.Controls.Add(this.buttonMaxErr);
             this.tabPageMaxError.Controls.Add(this.dataGridViewMaxError);
             this.tabPageMaxError.Location = new System.Drawing.Point(4, 22);
             this.tabPageMaxError.Name = "tabPageMaxError";
@@ -256,6 +258,17 @@ namespace TabFunctions
             // 
             this.MaxErrCol.HeaderText = "MaxError";
             this.MaxErrCol.Name = "MaxErrCol";
+            // 
+            // buttonMaxErr
+            // 
+            this.buttonMaxErr.Anchor = System.Windows.Forms.AnchorStyles.Right;
+            this.buttonMaxErr.Location = new System.Drawing.Point(61, 368);
+            this.buttonMaxErr.Name = "buttonMaxErr";
+            this.buttonMaxErr.Size = new System.Drawing.Size(75, 23);
+            this.buttonMaxErr.TabIndex = 3;
+            this.buttonMaxErr.Text = "Solve";
+            this.buttonMaxErr.UseVisualStyleBackColor = true;
+            this.buttonMaxErr.Click += new System.EventHandler(this.buttonMaxErr_Click);
             // 
             // Form1
             // 
@@ -306,6 +319,7 @@ namespace TabFunctions
         private System.Windows.Forms.DataGridView dataGridViewMaxError;
         private System.Windows.Forms.DataGridViewTextBoxColumn NumberOfNodesCol;
         private System.Windows.Forms.DataGridViewTextBoxColumn MaxErrCol;
+        private System.Windows.Forms.Button buttonMaxErr;
     }
 }
 

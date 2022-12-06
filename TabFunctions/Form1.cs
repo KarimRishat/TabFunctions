@@ -12,13 +12,14 @@ namespace TabFunctions
 {
     public partial class Form1 : Form
     {
-        int a = 0;
-        int b = 3;
-        double h = 0.6;        //шаг
-        double h2 = 0.3;
+        const int a = 0;    //начало отрезка
+        const int b = 3;    //конец отрезка
+        const double h = 0.6;        //шаг
+        const double h2 = 0.3;
         int n, m;
         List<Function> funcTable;      //таблица значений функции с шагом h
         List<Function> funcTableLn;     //таблица значений для полинома Лагранжа
+        Point point = new Point();
         public Form1()
         {
             InitializeComponent();
@@ -26,7 +27,7 @@ namespace TabFunctions
 
         void DrawChart(List<Function> func, System.Windows.Forms.DataVisualization.Charting.Series series)
         {
-            
+            series.Points.Clear();
             foreach (Function item in func)
             {
                 series.Points.AddXY(item.x, item.fx);
@@ -48,6 +49,26 @@ namespace TabFunctions
         {
             List<Function> errors = FindError(f1, f2);
             DrawChart(errors, chart2.Series[0]);
+        }
+
+        private void buttonMaxErr_Click(object sender, EventArgs e)
+        {
+            int nodes = 40;
+            List<double> maxErrors = new List<double>();
+            for (int i = 1; i <= nodes; i++)
+            {
+                double temp_h = (double)(b - a) / i;
+                List<Function> tempFunc = TabBessel.GetFunctions(a, i, temp_h, point);
+                List<Function> tempLN = TabBessel.GetLn(a, n, i, temp_h, point, funcTable);
+                List<Function> errors = FindError(tempFunc, tempLN);
+                maxErrors.Add(errors.Max(t => t.fx));
+            }
+            chart1.Series[0].Points.Clear();
+            for (int i = 0; i < nodes; i++)
+            {
+                dataGridViewMaxError.Rows.Add(i + 1, maxErrors[i]);
+                chart1.Series[0].Points.AddXY(i + 1, maxErrors[i]);
+            }
         }
 
         private void Form1_Load(object sender, EventArgs e)

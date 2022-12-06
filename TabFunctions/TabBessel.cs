@@ -26,7 +26,23 @@ namespace TabFunctions
 		}
 
 
-        public static double LagrPol(double x, int n, List<Function> func)
+
+        public static List<Function> GetFunctions(int a, int n, double h, IPoint point)
+        {
+            List<Function> funcTable = new List<Function>();
+            for (int i = 0; i <= n; i++)
+            {
+                double x = point.GetPoint(a, i, h);
+                double y = FindFx(x);
+                funcTable.Add(new Function(x, y));
+            }
+            return funcTable;
+        }       //Список значений функции
+
+
+
+
+        private static double LagrPol(double x, int n, List<Function> func)
         {
             double sum = 0.0;
             for (int i = 0; i <= n; i++)
@@ -47,6 +63,8 @@ namespace TabFunctions
             return sum;
         }
         
+
+
         public static List<Function> GetLn(int a, int n,int m, double h, IPoint point, List<Function> func)
         {
             List<Function> funcTable = new List<Function>();
@@ -61,17 +79,7 @@ namespace TabFunctions
         }
 
 
-        public static List<Function> GetFunctions(int a, int n, double h, IPoint point)
-        {
-            List<Function> funcTable = new List<Function>();
-            for (int i = 0; i <= n; i++)
-            {
-                double x = point.GetPoint(a, i, h);
-                double y = FindFx(x);
-                funcTable.Add(new Function(x, y));
-            }
-            return funcTable;
-        }       //Список значений функции
+
 
 
     }

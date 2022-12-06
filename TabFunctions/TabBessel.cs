@@ -25,19 +25,19 @@ namespace TabFunctions
 		}
 
 
-        public static double LagrPol(int a, int b, double x, int n, double h)
+        public static double LagrPol(double x, int n, List<Function> func)
         {
             double sum = 0.0;
             for (int i = 0; i < n; i++)
             {
-                double xi = a + i * h;
-                double fxi = FindFx(xi);
+                double xi = func[i].x;
+                double fxi = func[i].fx;
                 double mult = 1.0;
                 for (int j = 0; j < n; j++)
                 {
                     if (j != i)
                     {
-                        double xj = a + j * h;
+                        double xj = func[j].x;
                         mult *= (x - xj) / (xi - xj);
                     }
                 }
@@ -46,14 +46,14 @@ namespace TabFunctions
             return sum;
         }
         
-        public static List<Function> GetLn(int a, int b, int n, double h)
+        public static List<Function> GetLn(int a, int n, double h, IPoint point, List<Function> func)
         {
             List<Function> funcTable = new List<Function>();
-
-            for (int i = 0; i < n; i++)
+            int m = n * 2;
+            for (int i = 0; i <= m; i++)
             {
-                double x = a + i * h;        //Берем точку при большем количестве ущлов
-                double ln = LagrPol(a, b, x, n, h);        //Находим 
+                double x = point.GetPoint(a, i, h/2);        //Берем точку при большем количестве ущлов
+                double ln = LagrPol(x, n, func);        //Находим 
                 funcTable.Add(new Function(x, ln));
             }
 
@@ -61,12 +61,12 @@ namespace TabFunctions
         }
 
 
-        public static List<Function> GetFunctions(int a, int b, int n, double h)
+        public static List<Function> GetFunctions(int a, int n, double h, IPoint point)
         {
             List<Function> funcTable = new List<Function>();
-            for (int i = 0; i < n; i++)
+            for (int i = 0; i <= n; i++)
             {
-                double x = a + i * h;
+                double x = point.GetPoint(a, i, h);
                 double y = FindFx(x);
                 funcTable.Add(new Function(x, y));
             }

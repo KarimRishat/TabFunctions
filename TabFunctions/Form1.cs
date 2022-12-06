@@ -12,6 +12,13 @@ namespace TabFunctions
 {
     public partial class Form1 : Form
     {
+        int a = 0;
+        int b = 3;
+        double h = 0.6;        //шаг
+        double h2 = 0.3;
+        int n, m;
+        List<Function> funcTable;      //таблица значений функции с шагом h
+        List<Function> funcTableLn;     //таблица значений для полинома Лагранжа
         public Form1()
         {
             InitializeComponent();
@@ -28,44 +35,42 @@ namespace TabFunctions
 
         List<Function> FindError(List<Function> f1, List<Function> f2)
         {
+            List<Function> errors = new List<Function>();
+            for (int i = 0; i < f1.Count; i++)
+            {
+                double y = Math.Abs(f1[i].fx - f2[i].fx);
+                errors.Add(new Function(f1[i].x, y));
+            }
+            return errors;
+        }
 
+        void DrawErrorGraph(List<Function> f1, List<Function> f2)
+        {
+            List<Function> errors = FindError(f1, f2);
+            DrawChart(errors, chart2.Series[0]);
         }
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            int a = 0;
-            int b = 3;
-            double h = 0.6;        //количество узлов для полинома лагранжа
-            int n = (int)((b - a) / h);
-            double h2 = 0.3;
-            int m = (int)((b - a) / h2);
-
-            #region Func
-            List<Function> funcTable = TabBessel.GetFunctions(a, n, h, new Point());
+            n = (int)((b - a) / h);
+            m = (int)((b - a) / h2);
+            
+            funcTable = TabBessel.GetFunctions(a, n, h, new Point());
             foreach (Function function in funcTable)
             {
                 dataGridViewFunc.Rows.Add(function.x, function.fx);
             }
-            //DrawChart(funcTable, chart1.Series[0]);
+            DrawChart(funcTable, chart1.Series[0]);
 
-            #endregion Func
-
-            #region LN
-            List<Function> funcTableLn = TabBessel.GetLn(a, n, m, h2, new Point(), funcTable);
+            funcTableLn = TabBessel.GetLn(a, n, m, h2, new Point(), funcTable);
             foreach (Function function in funcTableLn)
             {
                 dataGridViewLN.Rows.Add(function.x, function.fx);
             }
-            #endregion
-
+            
             List<Function> funcTable2 = TabBessel.GetFunctions(a, m, h2, new Point());    //поиск функции с большими узлами
-            List<Function> errors = new List<Function>();
-            for (int i = 0; i <= m; i++)
-            {
-                double y = Math.Abs(funcTable2[i].fx - funcTableLn[i].fx);
-                errors.Add(new Function(funcTable2[i].x, y));
-            }
-            DrawChart(errors, chart1.Series[1]);
+            DrawErrorGraph(funcTable2, funcTableLn);
+            
 
 
         }

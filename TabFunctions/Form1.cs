@@ -26,6 +26,11 @@ namespace TabFunctions
             }
         }
 
+        List<Function> FindError(List<Function> f1, List<Function> f2)
+        {
+
+        }
+
         private void Form1_Load(object sender, EventArgs e)
         {
             int a = 0;
@@ -55,7 +60,7 @@ namespace TabFunctions
 
             List<Function> funcTable2 = TabBessel.GetFunctions(a, m, h2, new Point());    //поиск функции с большими узлами
             List<Function> errors = new List<Function>();
-            for (int i = 0; i < m; i++)
+            for (int i = 0; i <= m; i++)
             {
                 double y = Math.Abs(funcTable2[i].fx - funcTableLn[i].fx);
                 errors.Add(new Function(funcTable2[i].x, y));

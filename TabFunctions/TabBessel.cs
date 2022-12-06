@@ -13,27 +13,28 @@ namespace TabFunctions
         {
 			double eps = 0.000001;
 			double an = 1.0 ;         //а0 = 1
-			double fx = 0.0;
+			double fx = an;
 			double q = 1.0;
 			for(int j = 0; Math.Abs(an) >= eps; j++)
             {
-				fx += an;   //добавляем значение к сумме
-				q = (-1) * (x / (2 * (j + 1))) * (x / (2 * (j + 1)));   //следующий множитель q
+
+                q = (-1) * (x * x) / (4 * (j + 1) * (j + 1));   //следующий множитель q
 				an *= q;    //вычисляем следующее значение
-			}
-			return fx;
+                fx += an;   //добавляем значение к сумме
+            }
+            return fx;
 		}
 
 
         public static double LagrPol(double x, int n, List<Function> func)
         {
             double sum = 0.0;
-            for (int i = 0; i < n; i++)
+            for (int i = 0; i <= n; i++)
             {
                 double xi = func[i].x;
                 double fxi = func[i].fx;
                 double mult = 1.0;
-                for (int j = 0; j < n; j++)
+                for (int j = 0; j <= n; j++)
                 {
                     if (j != i)
                     {

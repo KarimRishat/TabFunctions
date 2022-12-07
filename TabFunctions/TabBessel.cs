@@ -30,9 +30,14 @@ namespace TabFunctions
         public static List<Function> GetFunctions(int a, int n, double h, IPoint point)
         {
             List<Function> funcTable = new List<Function>();
+            double htemp = h;
+            if (n == 1)
+            {
+                htemp = 1;
+            }
             for (int i = 0; i <= n; i++)
             {
-                double x = point.GetPoint(a, i, h);
+                double x = point.GetPoint(a, i, htemp);
                 double y = FindFx(x);
                 funcTable.Add(new Function(x, y));
             }
@@ -42,15 +47,15 @@ namespace TabFunctions
 
 
 
-        private static double LagrPol(double x, int n, List<Function> func)
+        private static double LagrPol(double x, List<Function> func)
         {
             double sum = 0.0;
-            for (int i = 0; i <= n; i++)
+            for (int i = 0; i < func.Count(); i++)
             {
                 double xi = func[i].x;
                 double fxi = func[i].fx;
                 double mult = 1.0;
-                for (int j = 0; j <= n; j++)
+                for (int j = 0; j < func.Count(); j++)
                 {
                     if (j != i)
                     {
@@ -65,13 +70,18 @@ namespace TabFunctions
         
 
 
-        public static List<Function> GetLn(int a, int n,int m, double h, IPoint point, List<Function> func)
+        public static List<Function> GetLn(int a, int m, double h, IPoint point, List<Function> func)
         {
             List<Function> funcTable = new List<Function>();
+            double htemp = h;
+            if (func.Count()-1 == 1)
+            {
+                htemp = 1;
+            }
             for (int i = 0; i <= m; i++)
             {
-                double x = point.GetPoint(a, i, h);        //Берем точку при большем количестве ущлов
-                double ln = LagrPol(x, n, func);        //Находим 
+                double x = point.GetPoint(a, i, htemp);        //Берем точку при большем количестве ущлов
+                double ln = LagrPol(x, func);        //Находим 
                 funcTable.Add(new Function(x, ln));
             }
 

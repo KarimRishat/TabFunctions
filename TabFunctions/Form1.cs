@@ -30,7 +30,7 @@ namespace TabFunctions
             series.Points.Clear();
             foreach (Function item in func)
             {
-                series.Points.AddXY(item.x, item.fx);
+                series.Points.AddXY(Math.Round(item.x,5), Math.Round(item.fx, 5));
             }
         }
 
@@ -59,15 +59,15 @@ namespace TabFunctions
             {
                 double temp_h = (double)(b - a) / i;
                 List<Function> tempFunc = TabBessel.GetFunctions(a, i, temp_h, point);
-                List<Function> tempLN = TabBessel.GetLn(a, n, i, temp_h, point, funcTable);
+                List<Function> tempLN = TabBessel.GetLn(a, i, temp_h, point, funcTable);
                 List<Function> errors = FindError(tempFunc, tempLN);
                 maxErrors.Add(errors.Max(t => t.fx));
             }
             chart1.Series[0].Points.Clear();
             for (int i = 0; i < nodes; i++)
             {
-                dataGridViewMaxError.Rows.Add(i + 1, maxErrors[i]);
-                chart1.Series[0].Points.AddXY(i + 1, maxErrors[i]);
+                dataGridViewMaxError.Rows.Add(i + 1, Math.Round(maxErrors[i], 5));
+                chart1.Series[0].Points.AddXY(i + 1, Math.Round(maxErrors[i], 5));
             }
         }
 
@@ -79,14 +79,14 @@ namespace TabFunctions
             funcTable = TabBessel.GetFunctions(a, n, h, new Point());
             foreach (Function function in funcTable)
             {
-                dataGridViewFunc.Rows.Add(function.x, function.fx);
+                dataGridViewFunc.Rows.Add(function.x, Math.Round(function.fx,5));
             }
             DrawChart(funcTable, chart1.Series[0]);
 
-            funcTableLn = TabBessel.GetLn(a, n, m, h2, new Point(), funcTable);
+            funcTableLn = TabBessel.GetLn(a, m, h2, new Point(), funcTable);
             foreach (Function function in funcTableLn)
             {
-                dataGridViewLN.Rows.Add(function.x, function.fx);
+                dataGridViewLN.Rows.Add(function.x, Math.Round(function.fx,5));
             }
             
             List<Function> funcTable2 = TabBessel.GetFunctions(a, m, h2, new Point());    //поиск функции с большими узлами

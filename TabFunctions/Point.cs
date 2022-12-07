@@ -8,6 +8,6 @@ namespace TabFunctions
 {
     class Point:IPoint
     {
-        public double GetPoint(int a, int i, double h) => a + (i * h);
+        public double GetPoint(int a, int b, int i, double h) => a + (i * h);
     }
 }

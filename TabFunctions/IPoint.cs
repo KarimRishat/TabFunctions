@@ -8,6 +8,6 @@ namespace TabFunctions
 {
     interface IPoint
     {
-        double GetPoint(int a, int i, double h);
+        double GetPoint(int a, int b, int i, double h);
     }
 }

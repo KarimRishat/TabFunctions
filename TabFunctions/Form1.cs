@@ -54,14 +54,14 @@ namespace TabFunctions
         private void buttonMaxErr_Click(object sender, EventArgs e)
         {
             int nodes = 40;
-            List<double> maxErrors = new List<double>();
+            List<double> maxErrors = new List<double>();        //храним максимальные погрешности
             for (int i = 1; i <= nodes; i++)
             {
                 double temp_h = (double)(b - a) / i;
-                List<Function> tempFunc = TabBessel.GetFunctions(a, i, temp_h, point);
-                List<Function> tempLN = TabBessel.GetLn(a, i, temp_h, point, funcTable);
-                List<Function> errors = FindError(tempFunc, tempLN);
-                maxErrors.Add(errors.Max(t => t.fx));
+                List<Function> tempFunc = TabBessel.GetFunctions(a, b, i, temp_h, point);
+                List<Function> tempLN = TabBessel.GetLn(a, b, i, temp_h, point, funcTable);    //ищем полином для i-го узла
+                List<Function> errors = FindError(tempFunc, tempLN);    //нахождение погрешностей
+                maxErrors.Add(errors.Max(t => t.fx));   //найти максимальную погрешность для i узлов
             }
             chart1.Series[0].Points.Clear();
             for (int i = 0; i < nodes; i++)
@@ -71,27 +71,50 @@ namespace TabFunctions
             }
         }
 
-        private void Form1_Load(object sender, EventArgs e)
+        void Chebyshev()
         {
             n = (int)((b - a) / h);
             m = (int)((b - a) / h2);
-            
-            funcTable = TabBessel.GetFunctions(a, n, h, new Point());
+
+            funcTable = TabBessel.GetFunctions(a, b, n, h, new ChebPoint());
             foreach (Function function in funcTable)
             {
-                dataGridViewFunc.Rows.Add(function.x, Math.Round(function.fx,5));
+                dataGridViewFunc.Rows.Add(function.x, Math.Round(function.fx, 5));
             }
             DrawChart(funcTable, chart1.Series[0]);
 
-            funcTableLn = TabBessel.GetLn(a, m, h2, new Point(), funcTable);
+            funcTableLn = TabBessel.GetLn(a, b, m, h2, new ChebPoint(), funcTable);
             foreach (Function function in funcTableLn)
             {
-                dataGridViewLN.Rows.Add(function.x, Math.Round(function.fx,5));
+                dataGridViewLN.Rows.Add(function.x, Math.Round(function.fx, 5));
             }
-            
-            List<Function> funcTable2 = TabBessel.GetFunctions(a, m, h2, new Point());    //поиск функции с большими узлами
+
+            List<Function> funcTable2 = TabBessel.GetFunctions(a, b, m, h2, new ChebPoint());    //поиск функции с большими узлами
             DrawErrorGraph(funcTable2, funcTableLn);
-            
+        }
+
+
+        private void Form1_Load(object sender, EventArgs e)
+        {
+            //n = (int)((b - a) / h);
+            //m = (int)((b - a) / h2);
+
+            //funcTable = TabBessel.GetFunctions(a, b, n, h, new Point());
+            //foreach (Function function in funcTable)
+            //{
+            //    dataGridViewFunc.Rows.Add(function.x, Math.Round(function.fx, 5));
+            //}
+            //DrawChart(funcTable, chart1.Series[0]);
+
+            //funcTableLn = TabBessel.GetLn(a, b, m, h2, new Point(), funcTable);
+            //foreach (Function function in funcTableLn)
+            //{
+            //    dataGridViewLN.Rows.Add(function.x, Math.Round(function.fx, 5));
+            //}
+
+            //List<Function> funcTable2 = TabBessel.GetFunctions(a, b, m, h2, new Point());    //поиск функции с большими узлами
+            //DrawErrorGraph(funcTable2, funcTableLn);
+            Chebyshev();
 
 
         }

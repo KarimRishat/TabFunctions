@@ -27,7 +27,7 @@ namespace TabFunctions
 
 
 
-        public static List<Function> GetFunctions(int a, int n, double h, IPoint point)
+        public static List<Function> GetFunctions(int a, int b, int n, double h, IPoint point)
         {
             List<Function> funcTable = new List<Function>();
             double htemp = h;
@@ -37,7 +37,7 @@ namespace TabFunctions
             }
             for (int i = 0; i <= n; i++)
             {
-                double x = point.GetPoint(a, i, htemp);
+                double x = point.GetPoint(a, b, i, htemp);
                 double y = FindFx(x);
                 funcTable.Add(new Function(x, y));
             }
@@ -70,7 +70,7 @@ namespace TabFunctions
         
 
 
-        public static List<Function> GetLn(int a, int m, double h, IPoint point, List<Function> func)
+        public static List<Function> GetLn(int a, int b, int m, double h, IPoint point, List<Function> func)
         {
             List<Function> funcTable = new List<Function>();
             double htemp = h;
@@ -80,7 +80,7 @@ namespace TabFunctions
             }
             for (int i = 0; i <= m; i++)
             {
-                double x = point.GetPoint(a, i, htemp);        //Берем точку при большем количестве ущлов
+                double x = point.GetPoint(a, b, i, htemp);        //Берем точку при большем количестве ущлов
                 double ln = LagrPol(x, func);        //Находим 
                 funcTable.Add(new Function(x, ln));
             }

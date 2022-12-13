@@ -8,22 +8,22 @@ namespace TabFunctions
 {
     static class TabBessel
     {
-		
+
         public static double FindFx(double x)
         {
-			double eps = 0.000001;
-			double an = 1.0 ;         //а0 = 1
-			double fx = an;
-			double q = 1.0;
-			for(int j = 0; Math.Abs(an) >= eps; j++)
+            double eps = 0.000001;
+            double an = 1.0;         //а0 = 1
+            double fx = an;
+            double q = 1.0;
+            for (int j = 0; Math.Abs(an) >= eps; j++)
             {
 
                 q = (-1) * (x * x) / (4 * (j + 1) * (j + 1));   //следующий множитель q
-				an *= q;    //вычисляем следующее значение
+                an *= q;    //вычисляем следующее значение
                 fx += an;   //добавляем значение к сумме
             }
             return fx;
-		}
+        }
 
 
 
@@ -67,14 +67,14 @@ namespace TabFunctions
             }
             return sum;
         }
-        
+
 
 
         public static List<Function> GetLn(int a, int b, int m, double h, IPoint point, List<Function> func)
         {
             List<Function> funcTable = new List<Function>();
             double htemp = h;
-            if (func.Count()-1 == 1)
+            if (func.Count() - 1 == 1)
             {
                 htemp = 1;
             }
@@ -88,9 +88,48 @@ namespace TabFunctions
             return funcTable;
         }
 
+        public static double Newton(double x, List<Function> func)
+        {
 
+            double sum = func[0].fx;
+            for (int i = 1; i < func.Count(); ++i)
+            {
 
+                double F = 0;
+                for (int j = 0; j <= i; ++j)
+                {
+                    double den = 1;
+                    for (int k = 0; k <= i; ++k)
+                        if (k != j)
+                            den *= func[j].x - func[k].x;
+                    F += func[j].fx / den;
+                }
 
+                for (int k = 0; k < i; ++k)
+                    F *= (x - func[k].x);
+                sum += F;
+            }
+            return sum;
+
+        }
+
+        public static List<Function> GetNewton(int a, int b, int m, double h, IPoint point, List<Function> func)
+        {
+            List<Function> funcTable = new List<Function>();
+            double htemp = h;
+            if (func.Count() - 1 == 1)
+            {
+                htemp = 1;
+            }
+            for (int i = 0; i <= m; i++)
+            {
+                double x = point.GetPoint(a, b, i, htemp);        //Берем точку при большем количестве ущлов
+                double ln = Newton(x, func);        //Находим 
+                funcTable.Add(new Function(x, ln));
+            }
+
+            return funcTable;
+        }
 
     }
 }

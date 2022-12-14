@@ -47,19 +47,20 @@ namespace TabFunctions
 
 
 
-        private static double LagrPol(double x, List<Function> func)
+        private static double LagrPol(double x, int nodes, IPoint point,int a, int b)
         {
             double sum = 0.0;
-            for (int i = 0; i < func.Count(); i++)
+            double h = (double)(b - a) / (nodes-1);
+            for (int i = 0; i < nodes; i++)
             {
-                double xi = func[i].x;
-                double fxi = func[i].fx;
+                double xi = point.GetPoint(a,b,i,h);
+                double fxi = FindFx(xi);
                 double mult = 1.0;
-                for (int j = 0; j < func.Count(); j++)
+                for (int j = 0; j < nodes; j++)
                 {
                     if (j != i)
                     {
-                        double xj = func[j].x;
+                        double xj = point.GetPoint(a,b,j,h);
                         mult *= (x - xj) / (xi - xj);
                     }
                 }
@@ -70,18 +71,18 @@ namespace TabFunctions
 
 
 
-        public static List<Function> GetLn(int a, int b, int m, double h, IPoint point, List<Function> func)
+        public static List<Function> GetLn(int a, int b, int m, double h, IPoint point, int nodes)
         {
             List<Function> funcTable = new List<Function>();
             double htemp = h;
-            if (func.Count() - 1 == 1)
+            if (nodes - 1 == 1)
             {
                 htemp = 1;
             }
             for (int i = 0; i <= m; i++)
             {
                 double x = point.GetPoint(a, b, i, htemp);        //Берем точку при большем количестве ущлов
-                double ln = LagrPol(x, func);        //Находим 
+                double ln = LagrPol(x, nodes, point, a, b);        //Находим 
                 funcTable.Add(new Function(x, ln));
             }
 

@@ -14,12 +14,12 @@ namespace TabFunctions
     {
         const int a = 0;    //начало отрезка
         const int b = 3;    //конец отрезка
-        const double h = 0.6;        //шаг
+        const double h1 = 0.6;        //шаг
         const double h2 = 0.3;
-        int n, m;
+        int n, m, nodes;
         List<Function> funcTable;      //таблица значений функции с шагом h
         List<Function> funcTableLn;     //таблица значений для полинома Лагранжа
-        IPoint point = new Point();
+        IPoint point;
         public Form1()
         {
             InitializeComponent();
@@ -59,11 +59,11 @@ namespace TabFunctions
         {
             int nodes = 40;
             List<double> maxErrors = new List<double>();        //храним максимальные погрешности
-            for (int i = 1; i <= nodes; i++)
+            for (int i = 5; i <= nodes; i++)
             {
                 double temp_h = (double)(b - a) / i;
-                List<Function> tempFunc = TabBessel.GetFunctions(a, b, i, temp_h, point);
-                List<Function> tempLN = TabBessel.GetLn(a, b, i, temp_h, point, funcTable);    //ищем полином для i-го узла
+                List<Function> tempFunc = TabBessel.GetFunctions(a, b, n, h1, point);
+                List<Function> tempLN = TabBessel.GetLn(a,b,m,h2,point,i);    //ищем полином для i-го узла
                 List<Function> errors = FindError(tempFunc, tempLN);    //нахождение погрешностей
                 maxErrors.Add(errors.Max(t => t.fx));   //найти максимальную погрешность для i узлов
             }
@@ -82,19 +82,20 @@ namespace TabFunctions
 
         void drawGraphs(IPoint p)
         {
-            n = (int)((b - a) / h);
+            n = (int)((b - a) / h1);
             m = (int)((b - a) / h2);
-            funcTable = TabBessel.GetFunctions(a, b, n, h, p);
+            funcTable = TabBessel.GetFunctions(a, b, n, h1, p);
             foreach (Function function in funcTable)
             {
-                dataGridViewFunc.Rows.Add(function.x, Math.Round(function.fx, 5));
+                dataGridViewFunc.Rows.Add(function.x, Math.Round(function.fx, n));
             }
             DrawChart(funcTable, chart1.Series[0]);
 
-            funcTableLn = TabBessel.GetLn(a, b, m, h2, p, funcTable);
+            nodes = 11;
+            funcTableLn = TabBessel.GetLn(a, b, m, h2, p, nodes);
             foreach (Function function in funcTableLn)
             {
-                dataGridViewLN.Rows.Add(function.x, Math.Round(function.fx, 5));
+                dataGridViewLN.Rows.Add(function.x, Math.Round(function.fx, n));
             }
 
             List<Function> funcTable2 = TabBessel.GetFunctions(a, b, m, h2, p);    //поиск функции с большими узлами
@@ -106,17 +107,20 @@ namespace TabFunctions
 
         void Chebyshev()
         {
+            point = new ChebPoint();
             drawGraphs(new ChebPoint());
         }
 
         void Default()
         {
+            point = new Point();
             drawGraphs(new Point());
         }
 
         void Newton()
         {
-            drawGraphsNewton(new Point());
+            point = new Point();
+            drawGraphsNewton(point);
         }
 
 
@@ -142,9 +146,9 @@ namespace TabFunctions
 
         private void drawGraphsNewton(IPoint p)
         {
-            n = (int)((b - a) / h);
+            n = (int)((b - a) / h1);
             m = (int)((b - a) / h2);
-            funcTable = TabBessel.GetFunctions(a, b, n, h, p);
+            funcTable = TabBessel.GetFunctions(a, b, n, h1, p);
             foreach (Function function in funcTable)
             {
                 dataGridViewFunc.Rows.Add(function.x, Math.Round(function.fx, 5));

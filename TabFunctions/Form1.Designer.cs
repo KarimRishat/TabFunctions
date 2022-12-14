@@ -29,12 +29,12 @@ namespace TabFunctions
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea3 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Legend legend3 = new System.Windows.Forms.DataVisualization.Charting.Legend();
-            System.Windows.Forms.DataVisualization.Charting.Series series3 = new System.Windows.Forms.DataVisualization.Charting.Series();
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea4 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Legend legend4 = new System.Windows.Forms.DataVisualization.Charting.Legend();
-            System.Windows.Forms.DataVisualization.Charting.Series series4 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea1 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend1 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Series series1 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea2 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend2 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Series series2 = new System.Windows.Forms.DataVisualization.Charting.Series();
             this.dataGridViewFunc = new System.Windows.Forms.DataGridView();
             this.args = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.values = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -51,10 +51,10 @@ namespace TabFunctions
             this.NumberOfNodesCol = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.MaxErrCol = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.tabPageError = new System.Windows.Forms.TabPage();
+            this.dataGridViewError = new System.Windows.Forms.DataGridView();
             this.splitContainer2 = new System.Windows.Forms.SplitContainer();
             this.chart1 = new System.Windows.Forms.DataVisualization.Charting.Chart();
             this.chart2 = new System.Windows.Forms.DataVisualization.Charting.Chart();
-            this.dataGridViewError = new System.Windows.Forms.DataGridView();
             this.dataGridViewTextBoxColumn3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dataGridViewTextBoxColumn4 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewFunc)).BeginInit();
@@ -69,13 +69,13 @@ namespace TabFunctions
             this.tabPageMaxError.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewMaxError)).BeginInit();
             this.tabPageError.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridViewError)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer2)).BeginInit();
             this.splitContainer2.Panel1.SuspendLayout();
             this.splitContainer2.Panel2.SuspendLayout();
             this.splitContainer2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.chart1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.chart2)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridViewError)).BeginInit();
             this.SuspendLayout();
             // 
             // dataGridViewFunc
@@ -232,6 +232,18 @@ namespace TabFunctions
             this.tabPageError.Text = "Error";
             this.tabPageError.UseVisualStyleBackColor = true;
             // 
+            // dataGridViewError
+            // 
+            this.dataGridViewError.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridViewError.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.dataGridViewTextBoxColumn3,
+            this.dataGridViewTextBoxColumn4});
+            this.dataGridViewError.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.dataGridViewError.Location = new System.Drawing.Point(3, 3);
+            this.dataGridViewError.Name = "dataGridViewError";
+            this.dataGridViewError.Size = new System.Drawing.Size(189, 418);
+            this.dataGridViewError.TabIndex = 3;
+            // 
             // splitContainer2
             // 
             this.splitContainer2.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -252,59 +264,48 @@ namespace TabFunctions
             // 
             // chart1
             // 
-            chartArea3.Name = "ChartArea1";
-            this.chart1.ChartAreas.Add(chartArea3);
+            chartArea1.Name = "ChartArea1";
+            this.chart1.ChartAreas.Add(chartArea1);
             this.chart1.Dock = System.Windows.Forms.DockStyle.Fill;
-            legend3.Name = "Legend1";
-            this.chart1.Legends.Add(legend3);
+            legend1.Name = "Legend1";
+            this.chart1.Legends.Add(legend1);
             this.chart1.Location = new System.Drawing.Point(0, 0);
             this.chart1.Name = "chart1";
-            series3.BorderWidth = 2;
-            series3.ChartArea = "ChartArea1";
-            series3.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Spline;
-            series3.Color = System.Drawing.Color.Red;
-            series3.Legend = "Legend1";
-            series3.Name = "Function";
-            this.chart1.Series.Add(series3);
+            series1.BorderWidth = 2;
+            series1.ChartArea = "ChartArea1";
+            series1.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Spline;
+            series1.Color = System.Drawing.Color.Red;
+            series1.Legend = "Legend1";
+            series1.Name = "Function";
+            this.chart1.Series.Add(series1);
             this.chart1.Size = new System.Drawing.Size(593, 225);
             this.chart1.TabIndex = 0;
             this.chart1.Text = "chart1";
             // 
             // chart2
             // 
-            chartArea4.Name = "ChartArea1";
-            this.chart2.ChartAreas.Add(chartArea4);
+            chartArea2.Name = "ChartArea1";
+            this.chart2.ChartAreas.Add(chartArea2);
             this.chart2.Dock = System.Windows.Forms.DockStyle.Fill;
-            legend4.Name = "Legend1";
-            this.chart2.Legends.Add(legend4);
+            legend2.Name = "Legend1";
+            this.chart2.Legends.Add(legend2);
             this.chart2.Location = new System.Drawing.Point(0, 0);
             this.chart2.Name = "chart2";
-            series4.BorderWidth = 2;
-            series4.ChartArea = "ChartArea1";
-            series4.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
-            series4.Legend = "Legend1";
-            series4.Name = "Error";
-            this.chart2.Series.Add(series4);
+            series2.BorderWidth = 2;
+            series2.ChartArea = "ChartArea1";
+            series2.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
+            series2.Legend = "Legend1";
+            series2.Name = "Error";
+            this.chart2.Series.Add(series2);
             this.chart2.Size = new System.Drawing.Size(593, 221);
             this.chart2.TabIndex = 1;
             this.chart2.Text = "chart2";
-            // 
-            // dataGridViewError
-            // 
-            this.dataGridViewError.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridViewError.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.dataGridViewTextBoxColumn3,
-            this.dataGridViewTextBoxColumn4});
-            this.dataGridViewError.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.dataGridViewError.Location = new System.Drawing.Point(3, 3);
-            this.dataGridViewError.Name = "dataGridViewError";
-            this.dataGridViewError.Size = new System.Drawing.Size(189, 418);
-            this.dataGridViewError.TabIndex = 3;
             // 
             // dataGridViewTextBoxColumn3
             // 
             this.dataGridViewTextBoxColumn3.FillWeight = 50F;
             this.dataGridViewTextBoxColumn3.HeaderText = "x";
+            this.dataGridViewTextBoxColumn3.MinimumWidth = 10;
             this.dataGridViewTextBoxColumn3.Name = "dataGridViewTextBoxColumn3";
             this.dataGridViewTextBoxColumn3.Width = 20;
             // 
@@ -334,13 +335,13 @@ namespace TabFunctions
             this.tabPageMaxError.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewMaxError)).EndInit();
             this.tabPageError.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridViewError)).EndInit();
             this.splitContainer2.Panel1.ResumeLayout(false);
             this.splitContainer2.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer2)).EndInit();
             this.splitContainer2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.chart1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.chart2)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridViewError)).EndInit();
             this.ResumeLayout(false);
 
         }

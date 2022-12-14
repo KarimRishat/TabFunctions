@@ -89,43 +89,54 @@ namespace TabFunctions
             return funcTable;
         }
 
-        public static double Newton(double x, List<Function> func)
+        public static double Newton(double x, int nodes, IPoint point, int a, int b)
         {
-
-            double sum = func[0].fx;
-            for (int i = 1; i < func.Count(); ++i)
+            double h = (double)(b - a) / (nodes - 1);
+            double sum = FindFx(point.GetPoint(a, b, 0, h));
+            for (int i = 1; i < nodes; ++i)
             {
 
                 double F = 0;
                 for (int j = 0; j <= i; ++j)
                 {
+                    double xj = point.GetPoint(a, b, j, h);
                     double den = 1;
                     for (int k = 0; k <= i; ++k)
+                    {
                         if (k != j)
-                            den *= func[j].x - func[k].x;
-                    F += func[j].fx / den;
+                        {
+                            
+                            double xk = point.GetPoint(a, b, k, h);
+                            den *= xj - xk;
+                        }
+                    }
+                    double fxj = FindFx(xj); 
+                    F += fxj / den;
                 }
 
                 for (int k = 0; k < i; ++k)
-                    F *= (x - func[k].x);
+                {
+                    double xk = point.GetPoint(a, b, k, h);
+                    F *= (x - xk);
+                }
                 sum += F;
             }
             return sum;
 
         }
 
-        public static List<Function> GetNewton(int a, int b, int m, double h, IPoint point, List<Function> func)
+        public static List<Function> GetNewton(int a, int b, int m, double h, IPoint point, int nodes)
         {
             List<Function> funcTable = new List<Function>();
             double htemp = h;
-            if (func.Count() - 1 == 1)
+            if (nodes - 1 == 1)
             {
                 htemp = 1;
             }
             for (int i = 0; i <= m; i++)
             {
                 double x = point.GetPoint(a, b, i, htemp);        //Берем точку при большем количестве ущлов
-                double ln = Newton(x, func);        //Находим 
+                double ln = Newton(x, nodes, point, a, b);        //Находим 
                 funcTable.Add(new Function(x, ln));
             }
 

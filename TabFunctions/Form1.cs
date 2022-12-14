@@ -57,18 +57,18 @@ namespace TabFunctions
 
         void MaxErrLN()
         {
-            int nodes = 40;
+            nodes = 40;
             List<double> maxErrors = new List<double>();        //храним максимальные погрешности
             for (int i = 5; i <= nodes; i++)
             {
                 double temp_h = (double)(b - a) / i;
-                List<Function> tempFunc = TabBessel.GetFunctions(a, b, n, h1, point);
+                List<Function> tempFunc = TabBessel.GetFunctions(a, b, m, h2, point);
                 List<Function> tempLN = TabBessel.GetLn(a,b,m,h2,point,i);    //ищем полином для i-го узла
                 List<Function> errors = FindError(tempFunc, tempLN);    //нахождение погрешностей
                 maxErrors.Add(errors.Max(t => t.fx));   //найти максимальную погрешность для i узлов
             }
             chart1.Series[0].Points.Clear();
-            for (int i = 0; i < nodes; i++)
+            for (int i = 0; i < nodes-5; i++)
             {
                 dataGridViewMaxError.Rows.Add(i + 1, Math.Round(maxErrors[i], 5));
                 chart1.Series[0].Points.AddXY(i + 1, Math.Round(maxErrors[i], 5));
@@ -91,7 +91,7 @@ namespace TabFunctions
             }
             DrawChart(funcTable, chart1.Series[0]);
 
-            nodes = 11;
+            nodes = 6;
             funcTableLn = TabBessel.GetLn(a, b, m, h2, p, nodes);
             foreach (Function function in funcTableLn)
             {
@@ -119,7 +119,8 @@ namespace TabFunctions
 
         void Newton()
         {
-            point = new Point();
+            //point = new Point();
+            point = new ChebPoint();
             drawGraphsNewton(point);
         }
 
@@ -128,16 +129,16 @@ namespace TabFunctions
         {
             int nodes = 40;
             List<double> maxErrors = new List<double>();        //храним максимальные погрешности
-            for (int i = 1; i <= nodes; i++)
+            for (int i = 5; i <= nodes; i++)
             {
                 double temp_h = (double)(b - a) / i;
-                List<Function> tempFunc = TabBessel.GetFunctions(a, b, i, temp_h, point);
-                List<Function> tempLN = TabBessel.GetNewton(a, b, i, temp_h, point, funcTable);    //ищем полином для i-го узла
+                List<Function> tempFunc = TabBessel.GetFunctions(a, b, m, h2, point);
+                List<Function> tempLN = TabBessel.GetNewton(a, b, m, h2, point, i);    //ищем полином для i-го узла
                 List<Function> errors = FindError(tempFunc, tempLN);    //нахождение погрешностей
                 maxErrors.Add(errors.Max(t => t.fx));   //найти максимальную погрешность для i узлов
             }
             chart1.Series[0].Points.Clear();
-            for (int i = 0; i < nodes; i++)
+            for (int i = 0; i < nodes-5; i++)
             {
                 dataGridViewMaxError.Rows.Add(i + 1, Math.Round(maxErrors[i], 5));
                 chart1.Series[0].Points.AddXY(i + 1, Math.Round(maxErrors[i], 5));
@@ -155,7 +156,9 @@ namespace TabFunctions
             }
             DrawChart(funcTable, chart1.Series[0]);
 
-            funcTableLn = TabBessel.GetNewton(a, b, m, h2, p, funcTable);
+
+            nodes = 6;
+            funcTableLn = TabBessel.GetNewton(a, b, m, h2, p, nodes);
             foreach (Function function in funcTableLn)
             {
                 dataGridViewLN.Rows.Add(function.x, Math.Round(function.fx, 5));
@@ -167,9 +170,9 @@ namespace TabFunctions
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            Default();
+            //Default();
             //Chebyshev();
-            //Newton();
+            Newton();
         }
     }
 }

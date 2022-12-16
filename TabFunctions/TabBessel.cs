@@ -35,7 +35,7 @@ namespace TabFunctions
             {
                 htemp = 1;
             }
-            for (int i = 0; i <= n; i++)
+            for (int i = 0; i < n; i++)
             {
                 double x = point.GetPoint(a, b, i, htemp);
                 double y = FindFx(x);
@@ -79,7 +79,7 @@ namespace TabFunctions
             {
                 htemp = 1;
             }
-            for (int i = 0; i <= m; i++)
+            for (int i = 0; i < m; i++)
             {
                 double x = point.GetPoint(a, b, i, htemp);        //Берем точку при большем количестве ущлов
                 double ln = LagrPol(x, nodes, point, a, b);        //Находим 

@@ -6,54 +6,38 @@ using System.Threading.Tasks;
 
 namespace TabFunctions
 {
-    delegate double Point(int a, int b, int i, int n);
     static class TabBessel
     {
-		
+
         public static double FindFx(double x)
         {
-			double eps = 0.000001;
-			double an = 1 ;         //а0 = 1
-			double fx = 0.0;
-			double q = 1;
-			for(int j = 0; Math.Abs(an) >= eps; j++)
+            double eps = 0.000001;
+            double an = 1.0;         //а0 = 1
+            double fx = an;
+            double q = 1.0;
+            for (int j = 0; Math.Abs(an) >= eps; j++)
             {
-				fx += an;   //добавляем значение к сумме
-				q = (-1) * (x / (2 * (j + 1))) * (x / (2 * (j + 1)));   //следующий множитель q
-				an *= q;    //вычисляем следующее значение
-			}
-			return fx;
-		}
 
-
-        public static double LagrPol(int a, int b, double x, int n, Point p)
-        {
-            double h = (double)((b - a) / n);
-            double sum = 0.0;
-            for (int i = 0; i <= n; i++)
-            {
-                double xi = p(a, b, i, n);
-                double fxi = FindFx(xi);
-                double mult = 1.0;
-                for (int j = 0; i < n; i++)
-                {
-                    if (j != i)
-                    {
-                        double xj = p(a, b, j, n);
-                        mult *= (x - xj) / (xi - xj);
-                    }
-                }
-                sum += mult;
+                q = (-1) * (x * x) / (4 * (j + 1) * (j + 1));   //следующий множитель q
+                an *= q;    //вычисляем следующее значение
+                fx += an;   //добавляем значение к сумме
             }
-            return sum;
+            return fx;
         }
 
-        public static List<Function> GetFunctions(int a, int b, int n, Point p)
+
+
+        public static List<Function> GetFunctions(int a, int b, int n, double h, IPoint point)
         {
             List<Function> funcTable = new List<Function>();
-            for (int i = 0; i <= n; i++)
+            double htemp = h;
+            if (n == 1)
             {
-                double x = p(a, b, i, n);
+                htemp = 1;
+            }
+            for (int i = 0; i < n; i++)
+            {
+                double x = point.GetPoint(a, b, i, htemp);
                 double y = FindFx(x);
                 funcTable.Add(new Function(x, y));
             }
@@ -61,14 +45,100 @@ namespace TabFunctions
         }       //Список значений функции
 
 
-        public static double GetPoint(int a, int b, int i, int n)
-        {
-            double h = (double)(b - a) / n;
-            double x = a + i * h;
-            return x;
-        }
-        //Находим точку
 
+
+        private static double LagrPol(double x, int nodes, IPoint point,int a, int b)
+        {
+            double sum = 0.0;
+            double h = (double)(b - a) / (nodes-1);
+            for (int i = 0; i < nodes; i++)
+            {
+                double xi = point.GetPoint(a,b,i,h);
+                double fxi = FindFx(xi);
+                double mult = 1.0;
+                for (int j = 0; j < nodes; j++)
+                {
+                    if (j != i)
+                    {
+                        double xj = point.GetPoint(a,b,j,h);
+                        mult *= (x - xj) / (xi - xj);
+                    }
+                }
+                sum += mult * fxi;
+            }
+            return sum;
+        }
+        public static List<Function> GetLn(int a, int b, int m, double h, IPoint point, int nodes)
+        {
+            List<Function> funcTable = new List<Function>();
+            double htemp = h;
+            if (nodes - 1 == 1)
+            {
+                htemp = 1;
+            }
+            for (int i = 0; i < m; i++)
+            {
+                double x = point.GetPoint(a, b, i, htemp);        //Берем точку при большем количестве ущлов
+                double ln = LagrPol(x, nodes, point, a, b);        //Находим 
+                funcTable.Add(new Function(x, ln));
+            }
+
+            return funcTable;
+        }
+
+        public static double Newton(double x, int nodes, IPoint point, int a, int b)
+        {
+            double h = (double)(b - a) / (nodes - 1);
+            double sum = FindFx(point.GetPoint(a, b, 0, h));
+            for (int i = 1; i < nodes; ++i)
+            {
+
+                double F = 0;
+                for (int j = 0; j <= i; ++j)
+                {
+                    double xj = point.GetPoint(a, b, j, h);
+                    double den = 1;
+                    for (int k = 0; k <= i; ++k)
+                    {
+                        if (k != j)
+                        {
+                            
+                            double xk = point.GetPoint(a, b, k, h);
+                            den *= xj - xk;
+                        }
+                    }
+                    double fxj = FindFx(xj); 
+                    F += fxj / den;
+                }
+
+                for (int k = 0; k < i; ++k)
+                {
+                    double xk = point.GetPoint(a, b, k, h);
+                    F *= (x - xk);
+                }
+                sum += F;
+            }
+            return sum;
+
+        }
+
+        public static List<Function> GetNewton(int a, int b, int m, double h, IPoint point, int nodes)
+        {
+            List<Function> funcTable = new List<Function>();
+            double htemp = h;
+            if (nodes - 1 == 1)
+            {
+                htemp = 1;
+            }
+            for (int i = 0; i <= m; i++)
+            {
+                double x = point.GetPoint(a, b, i, htemp);        //Берем точку при большем количестве ущлов
+                double ln = Newton(x, nodes, point, a, b);        //Находим 
+                funcTable.Add(new Function(x, ln));
+            }
+
+            return funcTable;
+        }
 
     }
 }

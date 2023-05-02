@@ -17,7 +17,7 @@ namespace TabFunctions
         const double h1 = 0.6;        //шаг
         const double h2 = 0.3;
         int n, m, nodes;
-        const byte Method = 2;
+        
         List<Function> funcTable;      //таблица значений функции с шагом h
         List<Function> funcTableLn;     //таблица значений для полинома Лагранжа
         IPoint point;
@@ -50,10 +50,14 @@ namespace TabFunctions
         {
             List<Function> errors = FindError(f1, f2);
             DrawChart(errors, chart2.Series[0]);
-            foreach (Function function in errors)
+            for(int i = errors.Count()-1; i >= 0;i--)
             {
-                dataGridViewError.Rows.Add(function.x, Math.Round(function.fx, 5));
+                dataGridViewError.Rows.Add(Math.Round(errors[i].x, 5), Math.Round(errors[i].fx, 9));
             }
+            //foreach (Function function in errors)
+            //{
+            //    dataGridViewError.Rows.Add(Math.Round(function.x,5), Math.Round(function.fx, 9));
+            //}
         }
 
         void MaxErrLN()
@@ -131,7 +135,7 @@ namespace TabFunctions
 
         void MaxErrNewton()
         {
-            int nodes = 40;
+            int nodes = 35;
             List<double> maxErrors = new List<double>();        //храним максимальные погрешности
             for (int i = 5; i <= nodes; i++)
             {
@@ -142,10 +146,10 @@ namespace TabFunctions
                 maxErrors.Add(errors.Max(t => t.fx));   //найти максимальную погрешность для i узлов
             }
             chart1.Series[0].Points.Clear();
-            for (int i = 0; i < nodes-5; i++)
+            for (int i = 5; i <= nodes; i++)
             {
-                dataGridViewMaxError.Rows.Add(i + 1, Math.Round(maxErrors[i], 5));
-                chart1.Series[0].Points.AddXY(i + 1, Math.Round(maxErrors[i], 5));
+                dataGridViewMaxError.Rows.Add(i, Math.Round(maxErrors[i-5], 9));
+                chart1.Series[0].Points.AddXY(i, Math.Round(maxErrors[i-5], 9));
             }
         }
 
@@ -172,6 +176,9 @@ namespace TabFunctions
             DrawErrorGraph(funcTable2, funcTableLn);
         }
 
+
+        //Выбор Метода
+        const byte Method = 3;  
         private void Form1_Load(object sender, EventArgs e)
         {
             

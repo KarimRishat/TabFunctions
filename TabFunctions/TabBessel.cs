@@ -68,9 +68,6 @@ namespace TabFunctions
             }
             return sum;
         }
-
-
-
         public static List<Function> GetLn(int a, int b, int m, double h, IPoint point, int nodes)
         {
             List<Function> funcTable = new List<Function>();
